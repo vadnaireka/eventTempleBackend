@@ -4,7 +4,6 @@ import com.codecool.event_finder.entity.CommentEntity;
 import com.codecool.event_finder.entity.EventEntity;
 import com.codecool.event_finder.entity.RatingEntity;
 import com.codecool.event_finder.entity.SavedEventEntity;
-import com.codecool.event_finder.repository.CommentRepository;
 import com.codecool.event_finder.repository.EventRepository;
 import com.codecool.event_finder.repository.RatingRepository;
 import com.codecool.event_finder.repository.SavedEventRepository;
@@ -12,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -58,11 +56,13 @@ public class DBManipulator {
         SavedEventEntity updatable = savedEventRepository.findDistinctByIdLike(eventID);
         if (updatable == null) {
             saveToDatabase(eventID);
+            updatable = savedEventRepository.findDistinctByIdLike(eventID);
         }
         RatingEntity buildedRating = RatingEntity.builder()
                 .event(updatable)
                 .rating(rate)
                 .build();
+        assert updatable != null;
         List<RatingEntity> ratings = updatable.getRatings();
         ratings.add(buildedRating);
         Double averageRating = dataManipulator.calculateAverageRating(updatable);

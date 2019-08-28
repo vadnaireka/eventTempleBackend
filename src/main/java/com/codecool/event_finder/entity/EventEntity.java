@@ -1,13 +1,12 @@
 package com.codecool.event_finder.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -36,5 +35,6 @@ public class EventEntity  {
     private String instagramLink;
     private String youtubeLink;
     private String buyTicketUrl;
+
 
 }

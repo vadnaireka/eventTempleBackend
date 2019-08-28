@@ -3,13 +3,11 @@ package com.codecool.event_finder.service;
 import com.codecool.event_finder.entity.CommentEntity;
 import com.codecool.event_finder.entity.EventEntity;
 import com.codecool.event_finder.entity.SavedEventEntity;
-import com.codecool.event_finder.repository.CommentRepository;
 import com.codecool.event_finder.repository.EventRepository;
 import com.codecool.event_finder.repository.SavedEventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 
 @Service
 public class DBManipulator  {
@@ -24,7 +22,6 @@ public class DBManipulator  {
 
     public void saveToDatabase(String eventID) {
         EventEntity eventEntity = eventRepository.findDistinctByIdLike(eventID);
-        System.out.println(eventEntity);
         SavedEventEntity build = SavedEventEntity.builder()
                 .id(eventEntity.getId())
                 .address(eventEntity.getAddress())
@@ -41,8 +38,6 @@ public class DBManipulator  {
                 .webpageLink(eventEntity.getWebpageLink())
                 .youtubeLink(eventEntity.getYoutubeLink())
                 .build();
-        System.out.println(build);
-
         savedEventRepository.save(build);
 
     }

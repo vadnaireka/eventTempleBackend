@@ -55,7 +55,6 @@ public class DataManipulator {
     }
 
     public List<SavedEventEntity> getSavedEvents() {
-        System.out.println(savedEventRepository.findAll());
         return savedEventRepository.findAll();
     }
 

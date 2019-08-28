@@ -1,5 +1,6 @@
 package com.codecool.event_finder.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -33,7 +34,9 @@ public class SavedEventEntity {
     @EqualsAndHashCode.Exclude
     @ElementCollection
     @OneToMany(mappedBy = "event", cascade = {CascadeType.ALL})
+    @JsonIgnore
     private List<RatingEntity> ratings;
+    private Double averagerating;
 
     @Singular
     @EqualsAndHashCode.Exclude

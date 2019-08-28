@@ -27,6 +27,9 @@ public class DBManipulator {
     @Autowired
     RatingRepository ratingRepository;
 
+    @Autowired
+    DataManipulator dataManipulator;
+
 
     public void saveToDatabase(String eventID) {
         EventEntity eventEntity = eventRepository.findDistinctByIdLike(eventID);
@@ -62,6 +65,8 @@ public class DBManipulator {
                 .build();
         List<RatingEntity> ratings = updatable.getRatings();
         ratings.add(buildedRating);
+        Double averageRating = dataManipulator.calculateAverageRating(updatable);
+        updatable.setAveragerating(averageRating);
         savedEventRepository.save(updatable);
     }
 }

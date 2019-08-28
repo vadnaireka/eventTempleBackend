@@ -23,5 +23,4 @@ public class RatingEntity {
     private Integer rating;
     @ManyToOne
     private SavedEventEntity event;
-
 }

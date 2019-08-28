@@ -1,5 +1,6 @@
 package com.codecool.event_finder.service;
 
+import com.codecool.event_finder.entity.RatingEntity;
 import com.codecool.event_finder.http.HttpManipulator;
 import com.codecool.event_finder.entity.SavedEventEntity;
 import com.codecool.event_finder.repository.EventRepository;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -135,6 +137,19 @@ public class DataManipulator {
             eventToSave.setBuyTicketUrl(null);
         }
         return eventToSave;
+    }
+
+    public Double calculateAverageRating(SavedEventEntity entity){
+        List<RatingEntity> ratings = entity.getRatings();
+        List<Integer> integerRatingList = new ArrayList<>();
+        for (RatingEntity rating : ratings) {
+            int rate = rating.getRating();
+            integerRatingList.add(rate);
+        }
+        Double sumOFRatings = integerRatingList.stream()
+                .mapToDouble(a -> a)
+                .sum();
+        return sumOFRatings / integerRatingList.size();
     }
 
 }

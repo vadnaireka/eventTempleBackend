@@ -34,6 +34,9 @@ public class DataManipulator {
     @Autowired
     SavedEventRepository savedEventRepository;
 
+    @Autowired
+    DataManipulator dataManipulator;
+
     public List<Venue> getVenueList(String countryCode) {
         ResponseEntity<Model> result = httpManipulator.getModelResponseEntity(countryCode);
         log.info("ez egy loooooooog!!!!!!");
@@ -65,11 +68,12 @@ public class DataManipulator {
     public void saveEventToDatabase(List<Event> events) {
         for (Event event : events) {
             EventEntity eventToSave = getEventEntity(event);
+
             eventRepository.save(eventToSave);
         }
     }
 
-    private String changeEventName(String name) {
+    public String changeEventName(String name) {
         if (name.contains("|")) {
             int index = name.indexOf("|");
             return name.substring(0, index).trim();

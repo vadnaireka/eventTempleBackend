@@ -5,6 +5,7 @@ import com.codecool.event_finder.entity.SavedEventEntity;
 import com.codecool.event_finder.model.Event;
 import com.codecool.event_finder.service.DBManipulator;
 import com.codecool.event_finder.service.DataManipulator;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
@@ -15,6 +16,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping
+@Slf4j
 public class EventController {
 
     @Autowired
@@ -25,6 +27,12 @@ public class EventController {
     DBManipulator dbManipulator;
 
 
+    @GetMapping(value = "/about")
+    public void MainPage(){}
+
+    @GetMapping(value = "/searchform")
+    public void searchForm(){}
+
     @GetMapping(value = "/event/{city}", produces = "application/json")
     public Event getEventByCity(@PathVariable("city") String cityName) {
         return dataManipulator.getEventsByCity(cityName);
@@ -34,6 +42,12 @@ public class EventController {
     @PostMapping(path = "/save/", consumes = "application/json")
     public void saveEventToDatabase(@RequestBody Map<String, String> eventEntity) {
         dbManipulator.saveToDatabase(eventEntity.get("eventEntity"));
+    }
+
+    @CrossOrigin
+    @PostMapping(path = "/saverating/", consumes = "application/json")
+    public void saveRating(@RequestBody Map<String, String> data) {
+        dbManipulator.saveRating(data.get("eventEntityId"), Integer.parseInt(data.get("rating")));
     }
 
     @CrossOrigin

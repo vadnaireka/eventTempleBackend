@@ -32,6 +32,12 @@ public class SavedEventEntity {
     @Singular
     @EqualsAndHashCode.Exclude
     @ElementCollection
+    @OneToMany(mappedBy = "event", cascade = {CascadeType.ALL})
+    private List<RatingEntity> ratings;
+
+    @Singular
+    @EqualsAndHashCode.Exclude
+    @ElementCollection
     @OneToMany(mappedBy = "event", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<CommentEntity> comments;
 

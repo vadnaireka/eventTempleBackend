@@ -9,4 +9,6 @@ import org.springframework.stereotype.Repository;
 public interface SavedEventRepository extends JpaRepository <SavedEventEntity, String>{
 
     SavedEventEntity findDistinctByIdLike(String id);
+
+    SavedEventEntity findDistinctById(String id);
 }

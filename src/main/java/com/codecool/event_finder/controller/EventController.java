@@ -28,11 +28,6 @@ public class EventController {
     DBManipulator dbManipulator;
 
 
-    @GetMapping(value = "/about")
-    public void MainPage(){}
-
-    @GetMapping(value = "/searchform")
-    public void searchForm(){}
 
     @GetMapping(value = "/event/{city}", produces = "application/json")
     public Event getEventByCity(@PathVariable("city") String cityName) {

@@ -1,22 +1,20 @@
 package com.codecool.event_finder.service;
 
-import com.codecool.event_finder.entity.RatingEntity;
-import com.codecool.event_finder.entity.UnifiedEventEntity;
-import com.codecool.event_finder.http.HttpManipulator;
-import com.codecool.event_finder.entity.SavedEventEntity;
-import com.codecool.event_finder.repository.EventRepository;
 import com.codecool.event_finder.entity.EventEntity;
+import com.codecool.event_finder.entity.RatingEntity;
+import com.codecool.event_finder.entity.SavedEventEntity;
+import com.codecool.event_finder.entity.UnifiedEventEntity;
 import com.codecool.event_finder.http.HttpManipulator;
 import com.codecool.event_finder.model.Event;
 import com.codecool.event_finder.model.Model;
 import com.codecool.event_finder.model.Venue;
+import com.codecool.event_finder.repository.EventRepository;
 import com.codecool.event_finder.repository.SavedEventRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -57,7 +55,6 @@ public class DataManipulator {
             log.warn(e.toString());
             return null;
         }
-        System.out.println(eventRepository.searchedEvents());
         return eventRepository.searchedEvents();
     }
 

@@ -63,7 +63,6 @@ public class EventController {
         return dataManipulator.getEventByCustomSearch(datas);
     }
 
-    @CrossOrigin
     @GetMapping(value = "/saved", produces = "application/json")
     public List<SavedEventEntity> getSavedEvents() {
         return dataManipulator.getSavedEvents();

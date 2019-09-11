@@ -7,6 +7,7 @@ import com.codecool.event_finder.repository.AppUserRepository;
 import com.codecool.event_finder.service.DBManipulator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -16,10 +17,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -42,6 +40,7 @@ public class ValidationController {
         this.authenticationManager = authenticationManager;
         this.jwtTokenServices = jwtTokenServices;
     }
+
 
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody UserCredentials data) {
@@ -67,6 +66,7 @@ public class ValidationController {
         }
     }
 
+
     @PostMapping("/registration")
     public void registration(@RequestBody UserCredentials data) {
         log.info(data.toString());
@@ -74,4 +74,7 @@ public class ValidationController {
         String password = data.getPassword();
         dbManipulator.saveNewUser(username, password);
     }
+
+
+
 }

@@ -19,14 +19,15 @@ public class DataInitializer implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception{
 
+        appUserRepository.deleteAll();
         appUserRepository.save(AppUser.builder()
-                .name("user")
+                .username("user")
                 .password(encoder.encode("password"))
                 .role("ROLE_USER")
                 .build());
 
         appUserRepository.save(AppUser.builder()
-                .name("admin")
+                .username("admin")
                 .password(encoder.encode("password"))
                 .role("ROLE_USER")
                 .role("ROLE_ADMIN")

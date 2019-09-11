@@ -1,18 +1,19 @@
 package com.codecool.event_finder.service;
 
-import com.codecool.event_finder.entity.CommentEntity;
-import com.codecool.event_finder.entity.EventEntity;
-import com.codecool.event_finder.entity.RatingEntity;
-import com.codecool.event_finder.entity.SavedEventEntity;
+import com.codecool.event_finder.entity.*;
+import com.codecool.event_finder.repository.AppUserRepository;
 import com.codecool.event_finder.repository.EventRepository;
 import com.codecool.event_finder.repository.RatingRepository;
 import com.codecool.event_finder.repository.SavedEventRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Slf4j
 @Service
 public class DBManipulator {
 
@@ -27,6 +28,12 @@ public class DBManipulator {
 
     @Autowired
     DataManipulator dataManipulator;
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
+
+    @Autowired
+    AppUserRepository appUserRepository;
 
 
     public void saveToDatabase(String eventID) {
@@ -68,5 +75,14 @@ public class DBManipulator {
         Double averageRating = dataManipulator.calculateAverageRating(updatable);
         updatable.setAveragerating(averageRating);
         savedEventRepository.save(updatable);
+    }
+
+    public void saveNewUser(String username, String password){
+        AppUser newuser = AppUser.builder()
+                .username(username)
+                .password(passwordEncoder.encode(password))
+                .role("ROLE_USER")
+                .build();
+        appUserRepository.save(newuser);
     }
 }

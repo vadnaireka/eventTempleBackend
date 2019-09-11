@@ -4,6 +4,9 @@ package com.codecool.event_finder.controller;
 import com.codecool.event_finder.config.JwtTokenServices;
 import com.codecool.event_finder.entity.UserCredentials;
 import com.codecool.event_finder.repository.AppUserRepository;
+import com.codecool.event_finder.service.DBManipulator;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -11,6 +14,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+@Slf4j
 @RestController
 @RequestMapping("/validation")
 public class ValidationController {
@@ -28,6 +34,9 @@ public class ValidationController {
     private final AuthenticationManager authenticationManager;
 
     private final JwtTokenServices jwtTokenServices;
+
+    @Autowired
+    DBManipulator dbManipulator;
 
     public ValidationController(AuthenticationManager authenticationManager, JwtTokenServices jwtTokenServices, AppUserRepository users) {
         this.authenticationManager = authenticationManager;
@@ -58,5 +67,11 @@ public class ValidationController {
         }
     }
 
-
+    @PostMapping("/registration")
+    public void registration(@RequestBody UserCredentials data) {
+        log.info(data.toString());
+        String username = data.getUsername();
+        String password = data.getPassword();
+        dbManipulator.saveNewUser(username, password);
+    }
 }

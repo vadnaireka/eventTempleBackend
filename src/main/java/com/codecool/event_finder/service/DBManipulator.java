@@ -85,4 +85,9 @@ public class DBManipulator {
                 .build();
         appUserRepository.save(newuser);
     }
+
+    public void deleteSavedEvent(String eventId) {
+        SavedEventEntity deletableSavedEntity = savedEventRepository.findDistinctById(eventId);
+        savedEventRepository.delete(deletableSavedEntity);
+    }
 }

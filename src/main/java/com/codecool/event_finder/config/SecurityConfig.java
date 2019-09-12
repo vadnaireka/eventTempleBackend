@@ -30,6 +30,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers(HttpMethod.GET, "/saved/").authenticated()
+                .antMatchers(HttpMethod.POST, "/save/").authenticated()
+                .antMatchers(HttpMethod.POST, "/saverating/").authenticated()
+                .antMatchers(HttpMethod.DELETE, "/deleteSavedEvent/").hasRole("ADMIN")
                 .and()
                 .addFilterBefore(new JwtTokenFilter(jwtTokenServices), UsernamePasswordAuthenticationFilter.class);
     }

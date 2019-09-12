@@ -68,4 +68,10 @@ public class EventController {
     public List<SavedEventEntity> getSavedEvents() {
         return dataManipulator.getSavedEvents();
     }
+
+    @CrossOrigin
+    @DeleteMapping("/deleteSavedEvent")
+    public void deleteSavedEvent(@RequestBody Map<String, String> eventEntity) {
+        dbManipulator.deleteSavedEvent(eventEntity.get("eventEntity"));
+    }
 }

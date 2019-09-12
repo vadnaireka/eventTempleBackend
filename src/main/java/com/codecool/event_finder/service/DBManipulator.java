@@ -86,8 +86,8 @@ public class DBManipulator {
         appUserRepository.save(newuser);
     }
 
+    @Transactional
     public void deleteSavedEvent(String eventId) {
-        SavedEventEntity deletableSavedEntity = savedEventRepository.findDistinctById(eventId);
-        savedEventRepository.delete(deletableSavedEntity);
+        savedEventRepository.deleteByIdLike(eventId);
     }
 }

@@ -22,7 +22,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.cors()
+        http
+                .cors()
                 .and()
                 .httpBasic().disable()
                 .csrf().disable()
@@ -32,7 +33,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/saved/").authenticated()
                 .antMatchers(HttpMethod.POST, "/save/").authenticated()
                 .antMatchers(HttpMethod.POST, "/saverating/").authenticated()
-                .antMatchers(HttpMethod.DELETE, "/deleteSavedEvent/").hasRole("ADMIN")
+                .antMatchers(HttpMethod.POST, "/deleteSavedEvent/").hasRole("ADMIN")
                 .and()
                 .addFilterBefore(new JwtTokenFilter(jwtTokenServices), UsernamePasswordAuthenticationFilter.class);
     }

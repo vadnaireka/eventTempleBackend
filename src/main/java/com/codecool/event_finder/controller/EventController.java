@@ -18,6 +18,7 @@ import java.util.Map;
 @RestController
 @RequestMapping
 @Slf4j
+@CrossOrigin
 public class EventController {
 
     @Autowired
@@ -34,19 +35,16 @@ public class EventController {
         return dataManipulator.getEventsByCity(cityName);
     }
 
-    @CrossOrigin
-    @PostMapping(path = "/save/", consumes = "application/json")
+    @PostMapping(path = "/save/")
     public void saveEventToDatabase(@RequestBody Map<String, String> eventEntity) {
         dbManipulator.saveToDatabase(eventEntity.get("eventEntity"));
     }
 
-    @CrossOrigin
-    @PostMapping(path = "/saverating/", consumes = "application/json")
+    @PostMapping(path = "/saverating/")
     public void saveRating(@RequestBody Map<String, String> data) {
         dbManipulator.saveRating(data.get("eventEntityId"), Integer.parseInt(data.get("rating")));
     }
 
-    @CrossOrigin
     @GetMapping(value = "/search/{city}/{startDateTime}/{endDateTime}/{keyword}", produces = "application/json")
     public List<UnifiedEventEntity> getEventByCustomSearch(@PathVariable("city") String cityName,
                                                            @PathVariable("startDateTime") String startDateTime,
@@ -63,9 +61,15 @@ public class EventController {
         return dataManipulator.getEventByCustomSearch(datas);
     }
 
-    @CrossOrigin
     @GetMapping(value = "/saved", produces = "application/json")
     public List<SavedEventEntity> getSavedEvents() {
         return dataManipulator.getSavedEvents();
+    }
+
+    @PostMapping(value = "/deleteSavedEvent/", consumes = "application/json")
+    public void deleteSavedEvent(@RequestBody HashMap<String, String> data) {
+        log.info("--------------------------THIS IS THE ID TO DELETE ---------------------");
+        log.info(data.toString());
+        dbManipulator.deleteSavedEvent(data.get("data"));
     }
 }

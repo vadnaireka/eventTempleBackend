@@ -11,4 +11,6 @@ public interface SavedEventRepository extends JpaRepository <SavedEventEntity, S
     SavedEventEntity findDistinctByIdLike(String id);
 
     SavedEventEntity findDistinctById(String id);
+
+    void deleteByIdLike(String id);
 }

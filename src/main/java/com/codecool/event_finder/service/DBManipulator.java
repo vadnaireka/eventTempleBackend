@@ -85,4 +85,9 @@ public class DBManipulator {
                 .build();
         appUserRepository.save(newuser);
     }
+
+    @Transactional
+    public void deleteSavedEvent(String eventId) {
+        savedEventRepository.deleteByIdLike(eventId);
+    }
 }

@@ -1,13 +1,10 @@
 package com.codecool.event_finder.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -32,5 +29,19 @@ public class SavedEventEntity {
     private String instagramLink;
     private String youtubeLink;
     private String buyTicketUrl;
+
+    @Singular
+    @EqualsAndHashCode.Exclude
+    @ElementCollection
+    @OneToMany(mappedBy = "event", cascade = {CascadeType.ALL})
+    @JsonIgnore
+    private List<RatingEntity> ratings;
+    private Double averagerating;
+
+    @Singular
+    @EqualsAndHashCode.Exclude
+    @ElementCollection
+    @OneToMany(mappedBy = "event", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    private List<CommentEntity> comments;
 
 }

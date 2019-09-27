@@ -1,55 +1,75 @@
 package com.codecool.event_finder.service;
 
+import com.codecool.event_finder.entity.EventEntity;
 import com.codecool.event_finder.http.HttpManipulator;
+import com.codecool.event_finder.model.Event;
 import com.codecool.event_finder.repository.EventRepository;
 import com.codecool.event_finder.repository.SavedEventRepository;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.transaction.annotation.Transactional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertEquals;
 
-class DataManipulatorTest {
+import java.util.ArrayList;
+import java.util.List;
+
+public class DataManipulatorTest {
 
 
-    @MockBean
+    @Autowired
     HttpManipulator httpManipulator;
 
-    @MockBean
+    @Autowired
     EventRepository eventRepository;
 
-    @MockBean
+    @Autowired
     SavedEventRepository savedEventRepository;
 
+    @Autowired
+    DataManipulator dataManipulator;
 
-    @BeforeEach
-    void setUp() {
+//
+//    @BeforeEach
+//    void setUp() {
+//    }
+//
+//    @AfterEach
+//    void tearDown() {
+//    }
+//
+//    @Test
+//    void getVenueList() {
+//    }
+//
+//    @Test
+//    void getEventsByCity() {
+//
+//    }
+//
+//    @Test
+//    void getEventByCustomSearch() {
+//    }
+//
+//    @Test
+//    void getSavedEvents() {
+//    }
+//
+    @Test
+    public void changeEventName(){
+        String badname = "Ariana Grande | Platinum tickets";
+        System.out.println(dataManipulator.changeEventName(badname));
+     //   assertEquals("Ariana Grande", dataManipulator.changeEventName(badname));
     }
 
-    @AfterEach
-    void tearDown() {
-    }
 
     @Test
-    void getVenueList() {
-    }
-
-    @Test
-    void getEventsByCity() {
-
-    }
-
-    @Test
-    void getEventByCustomSearch() {
-    }
-
-    @Test
-    void getSavedEvents() {
-    }
-
-    @Test
-    void saveEventToDatabase() {
+    @Transactional
+    public void saveEventToDatabase() {
+        eventRepository.deleteAll();
+        EventEntity abcd = EventEntity.builder().id("ABCD").build();
+        eventRepository.save(abcd);
+        assertThat(eventRepository.count()).isEqualTo(1);
     }
 }

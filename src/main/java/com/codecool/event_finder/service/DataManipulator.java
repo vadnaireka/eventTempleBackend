@@ -1,5 +1,7 @@
 package com.codecool.event_finder.service;
 
+import com.codecool.event_finder.entity.RatingEntity;
+import com.codecool.event_finder.entity.UnifiedEventEntity;
 import com.codecool.event_finder.http.HttpManipulator;
 import com.codecool.event_finder.entity.SavedEventEntity;
 import com.codecool.event_finder.repository.EventRepository;
@@ -14,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLOutput;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -30,6 +34,9 @@ public class DataManipulator {
     @Autowired
     SavedEventRepository savedEventRepository;
 
+    @Autowired
+    DataManipulator dataManipulator;
+
     public List<Venue> getVenueList(String countryCode) {
         ResponseEntity<Model> result = httpManipulator.getModelResponseEntity(countryCode);
         log.info("ez egy loooooooog!!!!!!");
@@ -41,7 +48,7 @@ public class DataManipulator {
         return httpManipulator.getEventResponseEntity(cityName).getBody().get_embedded().getEvents().get(1);
     }
 
-    public List<EventEntity> getEventByCustomSearch(HashMap<String, String> datas) {
+    public List<UnifiedEventEntity> getEventByCustomSearch(HashMap<String, String> datas) {
         eventRepository.deleteAll();
         ResponseEntity<Event> events = httpManipulator.getCustomEventBySearch(datas);
         try {
@@ -50,23 +57,23 @@ public class DataManipulator {
             log.warn(e.toString());
             return null;
         }
-//        return events.getBody().get_embedded().getEvents();
-        return eventRepository.findAll();
+        System.out.println(eventRepository.searchedEvents());
+        return eventRepository.searchedEvents();
     }
 
     public List<SavedEventEntity> getSavedEvents() {
-        System.out.println(savedEventRepository.findAll());
         return savedEventRepository.findAll();
     }
 
     public void saveEventToDatabase(List<Event> events) {
         for (Event event : events) {
             EventEntity eventToSave = getEventEntity(event);
+
             eventRepository.save(eventToSave);
         }
     }
 
-    private String changeEventName(String name) {
+    public String changeEventName(String name) {
         if (name.contains("|")) {
             int index = name.indexOf("|");
             return name.substring(0, index).trim();
@@ -136,6 +143,19 @@ public class DataManipulator {
             eventToSave.setBuyTicketUrl(null);
         }
         return eventToSave;
+    }
+
+    public Double calculateAverageRating(SavedEventEntity entity){
+        List<RatingEntity> ratings = entity.getRatings();
+        List<Integer> integerRatingList = new ArrayList<>();
+        for (RatingEntity rating : ratings) {
+            int rate = rating.getRating();
+            integerRatingList.add(rate);
+        }
+        Double sumOFRatings = integerRatingList.stream()
+                .mapToDouble(a -> a)
+                .sum();
+        return sumOFRatings / integerRatingList.size();
     }
 
 }
